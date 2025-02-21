@@ -21,4 +21,9 @@ class UserController extends Controller
 
         return response()->json(['token' => $token]);
     }
+
+    public function find(User $user)
+    {
+        return response()->json(['data' => $user->with(['medicalRecords', 'steps', 'heatBeats', 'bloodPressures'])]);
+    }
 }

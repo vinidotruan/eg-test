@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->float('weight');
             $table->integer('height');
-            $table->text('observations');
+            $table->text('observations')->nullable();
             $table->timestamps();
         });
     }

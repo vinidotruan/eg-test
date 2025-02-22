@@ -12,46 +12,65 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        $weightHeightLabels = $user->medicalRecords()
+        $medicalRecords = $user->medicalRecords()->latest()->take(100)->get();
+        $steps = $user->steps()->latest()->take(100)->get();
+        $heartRates = $user->heartBeats()->latest()->take(100)->get();
+        $bloodPressures = $user->bloodPressures()->latest()->take(100)->get();
+
+        return view('dashboard',[
+            ...$this->getMedicalChartData($medicalRecords),
+            ...$this->getStepsChartData($steps),
+            ...$this->getHeartRatesChartData($heartRates),
+            ...$this->getBloodPressureChartdata($bloodPressures),
+            'anomalies' => $user->anomalies,
+        ]);
+    }
+
+    private function getBloodPressureChartdata($bloodPressures): array
+    {
+        $bloodPressureLabels = $bloodPressures
             ->pluck('created_at')
             ->map(fn ($date) => $this->parseDate($date))
             ->toArray();
-        $weights = $user->medicalRecords()->pluck('weight')->toArray();
-        $heights = $user->medicalRecords()->pluck('height')->toArray();
 
-        $stepsLabels = $user->steps()
+        $systolicData = $bloodPressures->pluck('systolic')->toArray();
+        $diastolicData = $bloodPressures->pluck('diastolic')->toArray();
+
+        return [ 'bloodPressureLabels' => $bloodPressureLabels, 'systolicData' => $systolicData, 'diastolicData' => $diastolicData ];
+    }
+
+    private function getHeartRatesChartData($heartRates): array
+    {
+        $heartRateLabels = $heartRates
+            ->pluck('created_at')
+            ->map(fn ($date) => $this->parseDate($date))
+            ->toArray();
+        $heartRateData = $heartRates->pluck('data')->toArray();
+
+        return [ 'heartRateLabels' => $heartRateLabels, 'heartRateData' => $heartRateData ];
+    }
+
+    private function getMedicalChartData($medicalRecords): array
+    {
+        $weightHeightLabels = $medicalRecords
+            ->pluck('created_at')
+            ->map(fn ($date) => $this->parseDate($date))
+            ->toArray();
+        $weights = $medicalRecords->pluck('weight')->toArray();
+        $heights = $medicalRecords->pluck('height')->toArray();
+
+        return ['weightHeightLabels' => $weightHeightLabels, 'weights' => $weights, 'heights' => $heights ];
+    }
+
+    private function getStepsChartData($steps): array
+    {
+         $stepsLabels = $steps
            ->pluck('created_at')
            ->map(fn ($date) => $this->parseDate($date))
            ->toArray();
-        $stepsData = $user->steps()->pluck('data')->toArray();
+        $stepsData = $steps->pluck('data')->toArray();
 
-        $heartRateLabels = $user->heartBeats()
-            ->pluck('created_at')
-            ->map(fn ($date) => $this->parseDate($date))
-            ->toArray();
-        $heartRateData = $user->heartBeats()->pluck('data')->toArray();
-
-        $bloodPressureLabels = $user->bloodPressures()
-            ->pluck('created_at')
-            ->map(fn ($date) => $this->parseDate($date))
-            ->toArray();
-
-        $systolicData = $user->bloodPressures()->pluck('systolic')->toArray();
-        $diastolicData = $user->bloodPressures()->pluck('diastolic')->toArray();
-
-        return view('dashboard',[
-            'weightHeightLabels' => $weightHeightLabels,
-            'weights' => $weights,
-            'heights' => $heights,
-            'stepsLabels' => $stepsLabels,
-            'stepsData' => $stepsData,
-            'heartRateLabels' => $heartRateLabels,
-            'heartRateData' => $heartRateData,
-            'bloodPressureLabels' => $bloodPressureLabels,
-            'systolicData' => $systolicData,
-            'diastolicData' => $diastolicData,
-            'anomalies' => $user->anomalies,
-        ]);
+        return [ 'stepsLabels' => $stepsLabels, 'stepsData' => $stepsData ];
     }
 
     private function parseDate($date): string

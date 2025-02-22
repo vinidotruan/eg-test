@@ -22,6 +22,8 @@ When you are finished, please provide not only the project itself but also a det
 - should be redirected to the dashboard after the login
 - to test the OpenAI integration, should click on 'Consult Anomalies' button.
     - should reload the page and display a new anomaly based on migrated data.
+- to access the api docs, just access `localhost:8000/docs/api`
+    - to access the auth protected routes, do the login request first, get the token and put on the `Token` field.
 
 # Context of Development
 ## Why SQLite?

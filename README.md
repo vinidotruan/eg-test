@@ -33,15 +33,11 @@ SQLite is a really good tool to do POCs like this, u can easily manage a lot of 
 IMO sometimes setting up docker is more hard than setup the php on a machine.
 
 ## Decisions
-So I used the breezy starter kit to set up the login stuff, breezy makes it easy and fast for a simple front end. For the smart device step, I had used the sanctum api authentication to make it secure and easy as well.
+First of all, I wanted to see what the most commonly used data in this type of situation was, and then I wanted to structure the database in a simple way because later it would be analyzed by an AI and I didn't want to have to think about cleaning up the data and things like that.
+With that done, I went on to make an API to register this data in an easy way for me and any smart device that wants to do this, which is why I didn't even create the other API methods like index/update/destroy, I wanted to keep it small and simple.
 
-My proccess doing this was really straightforward, I just get what kinda health data I should store (heart beats, blood pressure, steps in a day, weight and height), after that I made the migrations of each and the models. In the models I decided not to put the relationships in the 'health entities' because I will not use them, but in the user models has all the relationships with the 'health entities'.
+After that, I was concerned about showing this to the end user in a simple way and I thought that the best way would be through graphics, so I asked chatgpt for a little help to generate an interface with tailwind css so that I could show the graphics in a coherent way.
 
-After this I jumped to the frontend step to display the data for the end user, in this step I just used chartjs lib to make it easy to see, I think that is more intuitive for the users to see with image charts instead of text, wrote it on the dashboard file at the first try just to see how it will be, and asked for a little tailwind css help in chat gpt. All done, I go to the open ai integration.
+The next step was to implement the integration with OpenAI, this was surprisingly easy, I just created a token on the site, put it in the .env, made an http call with a small prompt and the raw data. And as I said, chatgpt understood me really well without any additional data processing. After that, I created an entity to save it in a history and show it to the user more easily. I added a limit of 2 hours minimum between each query using chatgpt to avoid wasting tokens.
 
-This one really surprised me because it was really easy and fast, I just set a token and made a prompt like on the documentation and it surprisingly understood the data I've sent on the first way. I think if I can process the data and add some more description like "see the observations" and things like that, it should be more accurate. To protect the company side from wasting money I've added a minimum time of 2 hours interval to make a new consultation.
-I decided to do the test on the scheduled time, so I don't have any other good feature except the possibility to see the history of anomalies.
-
-Some of the planned improvements that I could implement is to make a general scope to get the last 100 records of users health relationships to display.
-
-I choose not to put more methods on the REST controllers just to make it easier to analyze, and in the actual context there is no need to use index/update/delete.
+Some changes that I think could be made in order to ensure greater maintainability is to create a “query scope” or an attribute that removes the repetition of code that limits the resources to the last 100 of each to show in the graphs.

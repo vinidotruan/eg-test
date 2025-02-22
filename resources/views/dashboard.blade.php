@@ -5,6 +5,18 @@
         </h2>
     </x-slot>
 
+    @if(session('alert'))
+        <div x-data="{ show: true }" x-show="show" class="fixed top-4 left-1/2 transform -translate-x-1/2 bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded shadow-lg flex items-center space-x-4 z-50" role="alert">
+            <span>{{ session('alert') }}</span>
+            <button @click="show = false" class="text-blue-700 focus:outline-none">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+    @endif
+
+
     <div class="py-4">
         <div class="mx-auto sm:px-6 lg:px-8">
             <x-anomaly-panel :anomalies="$anomalies" />

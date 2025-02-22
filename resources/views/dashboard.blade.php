@@ -25,7 +25,7 @@
 
     <div class="py-4">
         <div class="mx-auto sm:px-6 lg:px-8">
-            <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 <x-weight-height-chart
                     :labels="$weightHeightLabels"
                     :weights="$weights"
@@ -35,7 +35,7 @@
                     :data="$stepsData" />
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 <x-heart-rate-chart
                     :labels="$heartRateLabels"
                     :data="$heartRateData" />

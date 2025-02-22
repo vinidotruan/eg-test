@@ -32,6 +32,11 @@ class User extends Authenticatable
         ];
     }
 
+    public function anomalies(): HasMany
+    {
+        return $this->hasMany(Anomaly::class);
+    }
+
     public function heartBeats(): HasMany
     {
         return $this->hasMany(HeartBeat::class);

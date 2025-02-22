@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Models\User;
+use App\Services\AnomalyDetectionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,8 +23,11 @@ class UserController extends Controller
         return response()->json(['token' => $token]);
     }
 
-    public function find(User $user)
+    public function check(AnomalyDetectionService $service, DashboardController $controller)
     {
-        return response()->json(['data' => $user->with(['medicalRecords', 'steps', 'heatBeats', 'bloodPressures'])]);
+        $user = Auth::user()->load(['medicalRecords', 'heartBeats', 'bloodPressures']);
+        $result = $service->detectAnomaly($user->toArray());
+
+        return $controller->index();
     }
 }

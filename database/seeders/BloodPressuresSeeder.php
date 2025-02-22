@@ -15,7 +15,8 @@ class BloodPressuresSeeder extends Seeder
     public function run(): void
     {
         $user = User::first();
-        for ($i=0; $i < 10; $i++) {
+
+        for ($i=0; $i < 1000; $i++) {
             BloodPressure::create([
                 'user_id' => $user->id,
                 'systolic' => fake()->numberBetween(110, 140),

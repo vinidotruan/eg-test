@@ -1,5 +1,7 @@
 <div class="bg-white shadow-sm rounded p-4">
-    <h3 class="text-lg font-bold mb-2">Blood Pressure</h3>
+    <a href="{{ route('blood-pressure-list') }}" class="text-xl font-bold text-blue-600 hover:underline">
+        <h3 class="text-lg font-bold mb-2">Blood Pressure</h3>
+    </a>
     <div class="relative h-64">
         <canvas id="bloodPressureChart" class="w-full h-full"></canvas>
     </div>

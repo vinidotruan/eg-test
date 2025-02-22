@@ -15,7 +15,7 @@ class MedicalRecordsSeeder extends Seeder
     public function run(): void
     {
         $user = User::first();
-        for ($i=0; $i < 10; $i++) {
+        for ($i=0; $i < 1000; $i++) {
             MedicalRecord::create([
                 'user_id' => $user->id,
                 'weight' => fake()->randomFloat(2, 50, 100),

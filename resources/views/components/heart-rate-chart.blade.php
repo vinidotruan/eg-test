@@ -1,5 +1,7 @@
 <div class="bg-white shadow-sm rounded p-4">
-    <h3 class="text-lg font-bold mb-2">Heart Rate</h3>
+    <a href="{{ route('heart-beats-list') }}" class="text-xl font-bold text-blue-600 hover:underline">
+        <h3 class="text-lg font-bold mb-2">Heart Rate</h3>
+    </a>
     <div class="relative h-64">
         <canvas id="heartRateChart" class="w-full h-full"></canvas>
     </div>

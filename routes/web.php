@@ -13,6 +13,14 @@ Route::get('/dashboard',[DashboardController::class,'index'])
     ->middleware(['auth','verified'])
     ->name('dashboard');
 
+Route::get('/blood-pressure-list', [DashboardController::class, 'bloodPressureList'])
+    ->middleware(['auth'])
+    ->name('blood-pressure-list');
+
+Route::get('/heart-beats-list', [DashboardController::class, 'heartBeatsList'])
+    ->middleware(['auth'])
+    ->name('heart-beats-list');
+
 Route::post('check', [UserController::class, 'check'])->name('check')->middleware('auth');
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

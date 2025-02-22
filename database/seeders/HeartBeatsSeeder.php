@@ -14,7 +14,7 @@ class HeartBeatsSeeder extends Seeder
     public function run(): void
     {
         $user = User::first();
-        for($i=0;$i<10;$i++){
+        for($i=0;$i<1000;$i++){
             HeartBeat::create([
                 'user_id' => $user->id,
                 'data' => fake()->numberBetween(60, 190),

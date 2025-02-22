@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Anomaly;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Log;
 
 class AnomalyDetectionService
 {
@@ -54,6 +55,7 @@ class AnomalyDetectionService
                 }
             }
         } catch (\Exception $e) {
+            Log::info("error calling openAI", [$e->getMessage()]);
             return ['anomaly' => false, 'reason' => 'Error calling OpenAI: ' . $e->getMessage()];
         }
 

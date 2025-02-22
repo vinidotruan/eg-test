@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BloodPressure;
+use App\Models\HeartBeat;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -24,6 +26,16 @@ class DashboardController extends Controller
             ...$this->getBloodPressureChartdata($bloodPressures),
             'anomalies' => $user->anomalies,
         ]);
+    }
+
+    public function bloodPressureList(): View
+    {
+        return view('blood-pressure-list', ['records' => BloodPressure::latest()->paginate(15)]);
+    }
+
+    public function heartBeatsList(): View
+    {
+        return view('heart-beats-list', ['records' => HeartBeat::latest()->paginate(15)]);
     }
 
     private function getBloodPressureChartdata($bloodPressures): array

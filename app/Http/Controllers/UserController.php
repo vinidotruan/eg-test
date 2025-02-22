@@ -26,13 +26,29 @@ class UserController extends Controller
 
     public function check(AnomalyDetectionService $service, DashboardController $controller)
     {
-        $user = Auth::user()->load(['medicalRecords', 'heartBeats', 'bloodPressures']);
-        $lastCheck = $user->anomalies()->latest()->first()->created_at;
-        if($lastCheck->diffInHours(Carbon::now()) < 2) {
+
+        $user = Auth::user()->load([
+            'medicalRecords' => function ($query) {
+                $query->latest()->limit(30);
+            },
+            'heartBeats' => function ($query) {
+                $query->latest()->limit(30);
+            },
+            'bloodPressures' => function ($query) {
+                $query->latest()->limit(30);
+            },
+        ]);
+
+
+        $lastAnomaly = $user->anomalies()->latest()->first();
+
+        if ($lastAnomaly && $lastAnomaly->created_at->diffInHours(now()) < 2) {
             session()->flash('alert', 'Last check is too recent.');
             return $controller->index();
         }
+
         $result = $service->detectAnomaly($user->toArray());
+
 
         return $controller->index();
     }
